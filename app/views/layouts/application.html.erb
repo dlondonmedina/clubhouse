@@ -10,8 +10,61 @@
   </head>
 
   <body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert%></p>
-    <%= yield %>
+    <% if flash[:notice] %>
+      <div id="flash" class="notification is-primary global-notification">
+        <p class="notice"><%= notice %></p>
+      </div>
+    <% end %>
+    <% if flash[:alert] %>
+      <div id="flash" class="notification is-danger global-notification">
+        <p class="alert"><%= alert %></p>
+      </div>
+    <% end %>
+    <nav class="navbar is-dark">
+      <div class="navbar-brand">
+        <%= link_to root_path, class: "navbar-item" do %>
+          <h1 class="title is-5">Clubhouse</h1>
+        <% end %>
+        <div class="navbar-burger burger" data-target="navbarExample">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+
+      <div id="navbarExample" class="navbar-menu">
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="buttons">
+              <% if user_signed_in? %>
+                <%= link_to current_user.name, edit_user_registration_path, class: "button is-link" %>
+                <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "button is-link" %>
+              <% else %>
+                <%= link_to "Sign Up", new_user_registration_path, class: "button is-link" %>
+                <%= link_to "Sign In", new_user_session_path, class: "button is-link" %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </nav>
+      <section class="hero is-medium is-link">
+        <div class="hero-body">
+          <p class="title">Welcome to Clubhouse</p>
+          <p class="subtitle">The Members-Anonymouse Message Board!</p>
+        </div>
+      </section> 
+      <section class="section is-medium">
+        <div class="container">
+          <%= yield %>      
+        </div>
+      </section> 
+    <script type="text/javascript">
+      setTimeout(() => {
+        document.getElementById("flash").style.display = "none";
+      }, 3000);
+  </script>
   </body>
+  
 </html>
